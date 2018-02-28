@@ -1,6 +1,9 @@
 # Ai Player
 
 The project enable you to create an AI player for your game easily and quickly.
+* The game must be between 2 players who play *against* each other.
+* All the information about the game must be always visible for both players.
+* A prograss of one player is negative for the other player.
 
 
 ## Getting Started
@@ -271,5 +274,4 @@ Give an example
 
 ## Authors
 
-* **Itamar Laufer** - *high scool student* - [PurpleBooth](https://github.com/PurpleBooth)
-
+* **Itamar Laufer** - *high scool student* - (https://github.com/itamarLaufer)

@@ -1,4 +1,4 @@
-# Ai Player
+# AI Player using Mini Max tree with Alpha Beta Pruning
 
 The project enables you to create an AI player for your game easily and quickly.
 * The game must be between 2 players who play *against* each other.

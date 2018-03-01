@@ -1,6 +1,6 @@
 # Ai Player
 
-The project enable you to create an AI player for your game easily and quickly.
+The project enables you to create an AI player for your game easily and quickly.
 * The game must be between 2 players who play *against* each other.
 * All the information about the game must be always visible for both players.
 * A prograss of one player is negative for the other player.

@@ -25,7 +25,7 @@ public class AIPlayer {
      * @param <T> the type representing a move of this game
      * @return the best move for the player
      */
-    public <T> T getBestMove(State<T>state,boolean isFirstPlayer)
+    public <T> T getBestMove(State<T>state, boolean isFirstPlayer)
     {
         return miniMax(depth, state, isFirstPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
     }

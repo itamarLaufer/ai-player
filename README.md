@@ -1,9 +1,9 @@
-# AI Player using Mini Max Tree with Alpha Beta Pruning
+# AI Player using Mini Max Tree with Alpha-Beta Pruning
 
 The project enables you to create an AI player for your game easily and quickly.
 * The game must be between 2 players who play *against* each other.
 * All the information about the game must be always visible for both players.
-* A prograss of one player is negative for the other player.
+* A progress of one player is negative for the other player.
 
 
 ## Getting Started
@@ -13,12 +13,12 @@ Copy the three java class to your java workspace.
 
 ### How To Use?
 
-In the example we'll create an Ai for TicTacToe. (Some of the method were taken from the Internet).
-first you need to create a class which represents a move in the game and extend Move:
+In the example, we'll create an Ai for TicTacToe. (Some of the methods were taken from the Internet).
+first, you need to create a class which represents a move in the game:
 
 
 ```
-public class TicTacToeMove extends Move {
+public class TicTacToeMove {
     /**
      *
      * @author Itamar Laufer
@@ -56,7 +56,7 @@ public class TicTacToeMove extends Move {
     }
 }
 ```
-We created for the Move class an Enum Sign
+We created for the Move class an Enum Sign, represnting the sign in tic tac toe (X O) and E for empty tile.
 ```
 public enum Sign {
     /**
@@ -66,8 +66,7 @@ public enum Sign {
     X,O, E
 }
 ```
-Now we need to create a class representing a State in the game. It extend State and has the class <TicTacToeMove>.
-Offcourse there is a need to impleament a few methods.
+Now we need to create a class representing a State in the game. It extends State and has the class <TicTacToeMove>.
 ```
 public class TicTacToeState extends State<TicTacToeMove>{
     /**
@@ -240,7 +239,7 @@ public class TicTacToeState extends State<TicTacToeMove>{
     }
 }
 ```
-Now we are ready. Let's create a Main class.
+Now we are ready. Let's create a Main class. The main class runs a tic tac toe game between two AIs and prints the board after each turn.
 
 ```
 public class Main {
@@ -248,14 +247,13 @@ public class Main {
      * @author Itamar Laufer
      */
     public static void main(String[] args) {
-        // write your code here
         TicTacToeState state = new TicTacToeState(Sign.X);
         AIPlayer player = new AIPlayer(10);
         boolean flag = true;
         while (!state.isTerminal())
         {
-            state.doTurn(player.getBestMove(state,flag));
-            flag=!flag;
+            state.doTurn(player.getBestMove(state, flag));
+            flag = !flag;
             System.out.println(state);
         }
     }

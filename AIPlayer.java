@@ -56,7 +56,7 @@ public class AIPlayer {
             for(T move:moves)
             {
                 state.doTurn(move);
-                option = miniMax(depth-1, state, false, alpha, beta);
+                option = miniMax(depth - 1, state, false, alpha, beta);
                 score = option.value;
                 alpha = Math.max(alpha, score);
                 if(score > maxVal) {
@@ -74,7 +74,7 @@ public class AIPlayer {
             for(T move:moves)
             {
                 state.doTurn(move);
-                option = miniMax(depth-1, state, true, alpha, beta);
+                option = miniMax(depth - 1, state, true, alpha, beta);
                 score = option.value;
                 beta = Math.min(score, beta);
                 if(score < minVal) {

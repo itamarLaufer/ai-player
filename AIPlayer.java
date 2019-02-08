@@ -11,7 +11,7 @@ public class AIPlayer {
 
     /**
      * Constructs the ai
-     * @param depth      * @param depth the depth of the min max tree, should be in a size that will enable the calculation to end in the desired time
+     * @param depth the depth of the min-max tree, should be in a size that will enable the calculation to end in the desired time
      */
     public AIPlayer(int depth) {
         this.depth = depth;

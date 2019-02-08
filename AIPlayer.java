@@ -44,7 +44,7 @@ public class AIPlayer {
     private <T> MoveAndValue<T> miniMax (int depth, State<T>state, boolean isMaximizer, int alpha, int beta)
     {
         int score;
-        if(depth==0 || state.isTerminal()) {
+        if(depth == 0 || state.isTerminal()) {
             return new MoveAndValue<>(state.evaluate(), null);
         }
         List<T>moves = state.nextMoves();

@@ -1,6 +1,5 @@
-package com.company;
+package com.laufer.itamar.ai;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AIPlayer {
@@ -10,6 +9,10 @@ public class AIPlayer {
      */
     int depth;
 
+    /**
+     * Constructs the ai
+     * @param depth      * @param depth the depth of the min max tree, should be in a size that will enable the calculation to end in the desired time
+     */
     public AIPlayer(int depth) {
         this.depth = depth;
     }
@@ -17,80 +20,91 @@ public class AIPlayer {
     /**
      * the best move computation
      * @param state the current state, the player supposes that it's its turn.
-     * @param isFirstPlayer whether the ai is also the first playe of the game or the second.
+     * @param isFirstPlayer whether the ai is also the first player of the game or the second.
      * it's important for knowing whether the player is maximizer or minimizer
      * @param <T> the type representing a move of this game
-     * @return the move that would give the player the biggest earn (max value)
+     * @return the best move for the player
      */
-    public <T extends Move> T getBestMove(State<T>state,boolean isFirstPlayer)
+    public <T> T getBestMove(State<T>state,boolean isFirstPlayer)
     {
-        List<T>moves = state.nextMoves();
-        T bestMove=null;
-        int maxScore=Integer.MIN_VALUE;
+        return miniMax(depth, state, isFirstPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
+    }
+
+    /**
+     * the method calculate the value of the state
+     * using mini max with alpha beta pruning
+     * @param depth the depth of the min max tree
+     * @param state the current state of the game
+     * @param isMaximizer whether the current player maximizes or minimizes
+     * @param alpha the biggest value found yet
+     * @param beta the lowest value found yet
+     * @param <T> the type representing a move of this game
+     * @return MoveAndValue object with the best move to perform and its evaluation
+     */
+    private <T> MoveAndValue<T> miniMax (int depth, State<T>state, boolean isMaximizer, int alpha, int beta)
+    {
         int score;
-        for(T move:moves)
+        if(depth==0 || state.isTerminal()) {
+            return new MoveAndValue<>(state.evaluate(), null);
+        }
+        List<T>moves = state.nextMoves();
+        MoveAndValue<T> bestMove = null;
+        MoveAndValue<T> option;
+        if(isMaximizer)
         {
-            state.doTurn(move);
-            score = miniMax(state,isFirstPlayer);
-            state.undoTurn(move);
-            if(bestMove==null||(isFirstPlayer&&score>maxScore)||(!isFirstPlayer&&score<maxScore))
+            int maxVal = Integer.MIN_VALUE;
+            for(T move:moves)
             {
-                maxScore = score;
-                bestMove=move;
+                state.doTurn(move);
+                option = miniMax(depth-1, state, false, alpha, beta);
+                score = option.value;
+                alpha = Math.max(alpha, score);
+                if(score > maxVal) {
+                    maxVal = score;
+                    bestMove = new MoveAndValue<>(score, move);
+                }
+                state.undoTurn(move);
+                if(alpha >= beta)
+                    break;
+            }
+        }
+        else
+        {
+            int minVal = Integer.MAX_VALUE;
+            for(T move:moves)
+            {
+                state.doTurn(move);
+                option = miniMax(depth-1, state, true, alpha, beta);
+                score = option.value;
+                beta = Math.min(score, beta);
+                if(score < minVal) {
+                    minVal = score;
+                    bestMove = new MoveAndValue<>(score, move);
+                }
+                state.undoTurn(move);
+                if(alpha >= beta)
+                    break;
             }
         }
         return bestMove;
     }
 
     /**
-     * the method calculate the value of the state
-     * using mini max with alpha beta pruning
-     * @param depth
-     * @param state
-     * @param isMaximizer
-     * @param alpha
-     * @param beta
-     * @param <T>
-     * @return the value of this state (the best leaf (with given depth) with the max value if maximizer and min value if minimizer)
+     * This class represents a move in a abstract game aside with the evaluation of this move
+     * @param <T> the type of the object representing a move in this game
      */
-    private<T extends Move> int miniMax (int depth,State<T>state,boolean isMaximizer,int alpha,int beta)
-    {
-        int score;
-        if(depth==0||state.isTerminal())
-            return state.evaluate();
-        List<T>moves = state.nextMoves();
-        if(isMaximizer)
-        {
-            for(T move:moves)
-            {
-                state.doTurn(move);
-                score = miniMax(depth-1,state,!isMaximizer,alpha,beta);
-                alpha = Math.max(alpha,score);
-                state.undoTurn(move);
-                if(alpha>=beta)
-                    break;
-            }
-            return alpha;
-        }
-        else
-        {
-            for(T move:moves)
-            {
-                state.doTurn(move);
-                score = miniMax(depth-1,state,isMaximizer,alpha,beta);
-                beta = Math.min(beta,score);
-                state.undoTurn(move);
-                if(alpha>=beta)
-                    break;
-            }
-            return beta;
-        }
-    }
-    private<T extends Move> int miniMax (State<T>state,boolean isMaximizer)
-    {
-        return miniMax(depth,state,!isMaximizer,Integer.MIN_VALUE,Integer.MAX_VALUE);
-    }
+    private  class MoveAndValue<T>{
+        int value;
+        T move;
 
+        /**
+         * Constructs new MoveAndValue
+         * @param value the evaluation of this move
+         * @param move the move
+         */
+        MoveAndValue(int value, T move) {
+            this.value = value;
+            this.move = move;
+        }
+    }
 }
-
-

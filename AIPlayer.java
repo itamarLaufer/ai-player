@@ -48,20 +48,20 @@ public class AIPlayer {
             return new MoveAndValue<>(state.evaluate(), null);
         }
         List<T>moves = state.nextMoves();
-        MoveAndValue<T> bestMove = null;
+        MoveAndValue<T> bestMove;
         MoveAndValue<T> option;
         if(isMaximizer)
         {
-            int maxVal = Integer.MIN_VALUE;
+            bestMove = new MoveAndValue<>(Integer.MIN_VALUE, null);
             for(T move:moves)
             {
                 state.doTurn(move);
                 option = miniMax(depth - 1, state, false, alpha, beta);
                 score = option.value;
                 alpha = Math.max(alpha, score);
-                if(score > maxVal) {
-                    maxVal = score;
-                    bestMove = new MoveAndValue<>(score, move);
+                if(score > bestMove.value) {
+                    bestMove.value = score;
+                    bestMove.move = move;
                 }
                 state.undoTurn(move);
                 if(alpha >= beta)
@@ -70,16 +70,16 @@ public class AIPlayer {
         }
         else
         {
-            int minVal = Integer.MAX_VALUE;
+            bestMove = new MoveAndValue<>(Integer.MAX_VALUE, null);
             for(T move:moves)
             {
                 state.doTurn(move);
                 option = miniMax(depth - 1, state, true, alpha, beta);
                 score = option.value;
                 beta = Math.min(score, beta);
-                if(score < minVal) {
-                    minVal = score;
-                    bestMove = new MoveAndValue<>(score, move);
+                if(score < bestMove.value) {
+                    bestMove.value = score;
+                    bestMove.move = move;
                 }
                 state.undoTurn(move);
                 if(alpha >= beta)
